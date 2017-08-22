@@ -17,6 +17,8 @@ function countdown() {
       temp.innerHTML = seconds;
       if (seconds === 0) {
         console.log("Game over! Your score is " + points);
+        var scoreTextFile = new Blob([points], {type: "text/plain;charset=utf-8"});
+        saveAs(scoreTextFile, "typing-game-score.txt");
         words.innerHTML = "";
         button.disabled = false;
         clearInterval(timer);
