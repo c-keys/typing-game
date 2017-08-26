@@ -303,9 +303,6 @@ document.onkeyup = function(e) {
 };
 
 function typing(e) {
-  if (e.ctrlKey) {
-    return console.log('start!')
-  }
   typed = String.fromCharCode(e.which);
   for (var i = 0; i < spans.length; i++) {
     if (spans[i].innerHTML === typed) {
