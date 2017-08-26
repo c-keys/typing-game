@@ -13,38 +13,37 @@ function countdown() {
   points = 0;
   var timer = setInterval(function(){
     button.disabled = true;
-      seconds--;
-      temp.innerHTML = seconds;
-      if (seconds === 0) {
-        console.log("Game over! Your score is " + points);
-        var scoreTextFile = new Blob([points], {type: "text/plain;charset=utf-8"});
-        saveAs(scoreTextFile, "typing-game-score.txt");
-        words.innerHTML = "";
-        button.disabled = false;
-        clearInterval(timer);
-        seconds = 30;
-        timerDiv.innerHTML = "30";
-        button.disabled = false;
-      }
-  }, 1000);
-  }
-
-  function random() {
-    words.innerHTML = "";
-    var random = Math.floor(Math.random() * (1943 - 0 + 1)) + 0;
-    var wordArray = list[random].split("");
-    for (var i = 0; i < wordArray.length; i++) {
-      var span = document.createElement("span");
-      span.classList.add("span");
-      span.innerHTML = wordArray[i];
-      words.appendChild(span);
+    seconds--;
+    temp.innerHTML = seconds;
+    if (seconds === 0) {
+      console.log("Game over! Your score is " + points);
+      var scoreTextFile = new Blob([points], {type: "text/plain;charset=utf-8"});
+      saveAs(scoreTextFile, "typing-game-score.txt");
+      words.innerHTML = "";
+      button.disabled = false;
+      clearInterval(timer);
+      seconds = 30;
+      timerDiv.innerHTML = "30";
+      button.disabled = false;
     }
-    spans = document.querySelectorAll(".span");
-  }
+  }, 1000);
+}
 
+function random() {
+  words.innerHTML = "";
+  var random = Math.floor(Math.random() * (1943 - 0 + 1)) + 0;
+  var wordArray = list[random].split("");
+  for (var i = 0; i < wordArray.length; i++) {
+    var span = document.createElement("span");
+    span.classList.add("span");
+    span.innerHTML = wordArray[i];
+    words.appendChild(span);
+  }
+  spans = document.querySelectorAll(".span");
+}
 
 const list = ['ACCOUNT','ACCURATE','ACRES','ACROSS','ACT','ACTION','ACTIVE','ACTIVITY',
-'ACTUAL','ACTUALLY','ADD','ADDITION','ADDITIONAL','ADJECTIVE','ADULT','ADVENTURE',
+  'ACTUAL','ACTUALLY','ADD','ADDITION','ADDITIONAL','ADJECTIVE','ADULT','ADVENTURE',
 'ADVICE','AFFECT','AFRAID','AFTER','AFTERNOON','AGAIN','AGAINST','AGE',
 'AGO','AGREE','AHEAD','AID','AIR','AIRPLANE','ALIKE','ALIVE',
 'ALL','ALLOW','ALMOST','ALONE','ALONG','ALOUD','ALPHABET','ALREADY',
@@ -287,50 +286,61 @@ const list = ['ACCOUNT','ACCURATE','ACRES','ACROSS','ACT','ACTION','ACTIVE','ACT
 'YEAR','YELLOW','YES','YESTERDAY','YET','YOU','YOUNG','YOUNGER',
 'YOUR','YOURSELF','YOUTH','ZERO','ZOO'];
 
-  button.addEventListener("click", function(e){
+button.addEventListener("click", function(e){
+  countdown();
+  random();
+  scoreDiv.innerHTML = "0";
+  button.disabled = true;
+});
+
+document.onkeyup = function(e) {
+  if (e.ctrlKey && e.which == 83) {
     countdown();
     random();
     scoreDiv.innerHTML = "0";
     button.disabled = true;
-  });
-
-
-  function typing(e) {
-      typed = String.fromCharCode(e.which);
-      for (var i = 0; i < spans.length; i++) {
-        if (spans[i].innerHTML === typed) {
-          if (spans[i].classList.contains("bg")) {
-            continue;
-          } else if (spans[i].classList.contains("bg") === false && spans[i-1] === undefined || spans[i-1].classList.contains("bg") !== false ) {
-            spans[i].classList.add("bg");
-            break;
-          }
-        }
-      }
-      var checker = 0;
-      for (var j = 0; j < spans.length; j++) {
-        if (spans[j].className === "span bg") {
-          checker++;
-        }
-        if (checker === spans.length) {
-          spark.pause();
-          spark.currentTime = 0;
-          spark.play();
-          words.classList.add("animated");
-          words.classList.add("fadeOutDownBig");
-          if (seconds !== 30) {
-            points++;
-            scoreDiv.innerHTML = points;
-            document.removeEventListener("keydown", typing, false);
-            setTimeout(function(){
-              words.className = "words";
-              random();
-              document.addEventListener("keydown", typing, false);
-            }, 400);
-          }
-        }
-
-      }
   }
+};
 
-  document.addEventListener("keydown", typing, false);
+function typing(e) {
+  if (e.ctrlKey) {
+    return console.log('start!')
+  }
+  typed = String.fromCharCode(e.which);
+  for (var i = 0; i < spans.length; i++) {
+    if (spans[i].innerHTML === typed) {
+      if (spans[i].classList.contains("bg")) {
+        continue;
+      } else if (spans[i].classList.contains("bg") === false && spans[i-1] === undefined || spans[i-1].classList.contains("bg") !== false ) {
+        spans[i].classList.add("bg");
+        break;
+      }
+    }
+  }
+  var checker = 0;
+  for (var j = 0; j < spans.length; j++) {
+    if (spans[j].className === "span bg") {
+      checker++;
+    }
+    if (checker === spans.length) {
+      spark.pause();
+      spark.currentTime = 0;
+      spark.play();
+      words.classList.add("animated");
+      words.classList.add("fadeOutDownBig");
+      if (seconds !== 30) {
+        points++;
+        scoreDiv.innerHTML = points;
+        document.removeEventListener("keydown", typing, false);
+        setTimeout(function(){
+          words.className = "words";
+          random();
+          document.addEventListener("keydown", typing, false);
+        }, 400);
+      }
+    }
+
+  }
+}
+
+document.addEventListener("keydown", typing, false);
