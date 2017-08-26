@@ -294,7 +294,7 @@ button.addEventListener("click", function(e){
 });
 
 document.onkeyup = function(e) {
-  if (e.ctrlKey && e.which == 83) {
+  if (e.ctrlKey && e.which == 13) {
     countdown();
     random();
     scoreDiv.innerHTML = "0";
