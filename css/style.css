@@ -11,8 +11,8 @@ body {
 }
 
 .wrapper {
-  margin: 10rem auto;
-  width: 70%;
+  margin: 1rem auto;
+  width: 80%;
   text-align: center;
   padding: 2%;
   background-color: #EB518E;
@@ -71,7 +71,7 @@ button:active {
 }
 
 .wordsWrap {
-  margin-top: 50px;
+  margin-top: 10px;
 }
 
 .words span{
