@@ -17,8 +17,9 @@ function countdown() {
     temp.innerHTML = seconds;
     if (seconds === 0) {
       console.log("Game over! Your score is " + points);
-      var scoreTextFile = new Blob([points], {type: "text/plain;charset=utf-8"});
-      saveAs(scoreTextFile, "typing-game-score.txt");
+      //var scoreTextFile = new Blob([points], {type: "text/plain;charset=utf-8"});
+      //saveAs(scoreTextFile, "typing-game-score.txt");
+      setscore(points);
       words.innerHTML = "";
       button.disabled = false;
       clearInterval(timer);
@@ -27,6 +28,14 @@ function countdown() {
       button.disabled = false;
     }
   }, 1000);
+}
+
+function setscore(score) {
+  url = "http://localhost:5000/score?score=" + score
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( "GET", url, true );
+  xmlHttp.send( null );
+  return xmlHttp.responseText;
 }
 
 function random() {
